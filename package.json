@@ -4,7 +4,13 @@
   "main": "src/server.js",
   "scripts": {
     "start": "dotenv -- nodemon src/server.js",
-    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md,html,ejs}\""
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md,html,ejs}\"",
+    "db:init": "npm run prisma:migrate && npm run prisma:generate",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy",
+    "prisma:reset": "prisma migrate reset",
+    "prisma:studio": "prisma studio"
   },
   "keywords": [],
   "author": "",
