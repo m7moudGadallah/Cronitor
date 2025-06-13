@@ -5,4 +5,8 @@ module.exports = {
     const healthChecks = await healthChecksRepo.get();
     res.render('index.ejs', { checks: healthChecks });
   },
+
+  getSettings: async (_, res) => {
+    res.render('settings.ejs', {});
+  },
 };
