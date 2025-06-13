@@ -8,4 +8,5 @@ module.exports = ({ app, staticFilesDir, viewsDir }) => {
   app.set('view engine', 'ejs');
   app.set('views', viewsDir);
   app.use(express.static(staticFilesDir));
+  app.use(express.json());
 };
