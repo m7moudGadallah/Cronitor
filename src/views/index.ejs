@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cronitor - Website Monitoring</title>
+    <link rel="icon" type="image/x-icon" href="/imgs/favicon.png">
+    <meta name="description" content="Real-time website monitoring and health checks">
+    
+    <!-- Bootstrap CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+      :root {
+        --cronitor-primary: #6f42c1;
+        --cronitor-secondary: #6610f2;
+      }
+      
+      .navbar-brand img {
+        height: 30px;
+        margin-right: 10px;
+      }
+      
+      .status-badge {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+        border-radius: 12px;
+      }
+      
+      .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s;
+      }
+      
+      .card:hover {
+        transform: translateY(-2px);
+      }
+      
+      .response-time {
+        font-family: 'Courier New', monospace;
+        font-weight: bold;
+      }
+      
+      .last-checked {
+        font-size: 0.9rem;
+        opacity: 0.8;
+      }
+    </style>
+  </head>
+  <body class="bg-light">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+          <img src="/imgs/favicon.png" alt="Cronitor Logo">
+          <span class="fw-bold">CRONITOR</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="/">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Settings</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Health Check Dashboard</h1>
+      </div>
+      
+      <!-- Summary Cards -->
+      <div class="row mb-4">
+        <div class="col-md-4">
+          <div class="card bg-success bg-opacity-10 border-success">
+            <div class="card-body">
+              <h5 class="card-title">Operational</h5>
+              <p class="display-6 mb-0"><%= checks.filter(c => c.up).length %></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card bg-danger bg-opacity-10 border-danger">
+            <div class="card-body">
+              <h5 class="card-title">Issues</h5>
+              <p class="display-6 mb-0"><%= checks.filter(c => !c.up).length %></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card bg-info bg-opacity-10 border-info">
+            <div class="card-body">
+              <h5 class="card-title">Total Checks</h5>
+              <p class="display-6 mb-0"><%= checks.length %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Checks Table -->
+      <div class="card">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">Recent Checks</h5>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Time</th>
+                  <th>URL</th>
+                  <th>Status</th>
+                  <th>Response</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% checks.forEach(check => { %>
+                <tr>
+                  <td><%= check.timestamp.toLocaleString() %></td>
+                  <td>
+                    <a href="<%= check.url %>" target="_blank" class="text-decoration-none">
+                      <%= check.url.replace(/^https?:\/\//, '') %>
+                    </a>
+                  </td>
+                  <td>
+                    <span class="status-badge badge bg-<%= check.up ? 'success' : 'danger' %>">
+                      <%= check.up ? 'UP' : 'DOWN' %> (<%= check.status %>)
+                    </span>
+                  </td>
+                  <td class="response-time text-<%= check.responseTime > 500 ? 'danger' : check.responseTime > 200 ? 'warning' : 'success' %>">
+                    <%= check.responseTime %>ms
+                  </td>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer bg-white last-checked">
+          Last checked at: <%= new Date().toLocaleString() %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script>
+      // Tooltip initialization
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+      
+      // Color response time cells based on value
+      document.querySelectorAll('.response-time').forEach(el => {
+        const time = parseInt(el.textContent);
+        if (time > 500) {
+          el.classList.add('text-danger');
+        } else if (time > 200) {
+          el.classList.add('text-warning');
+        } else {
+          el.classList.add('text-success');
+        }
+      });
+    </script>
+  </body>
+</html>
