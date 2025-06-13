@@ -1,0 +1,35 @@
+:root {
+  --cronitor-primary: #6f42c1;
+  --cronitor-secondary: #6610f2;
+}
+
+.navbar-brand img {
+  height: 30px;
+  margin-right: 10px;
+}
+
+.status-badge {
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+.card {
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.response-time {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+}
+
+.last-checked {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
