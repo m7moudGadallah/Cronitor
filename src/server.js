@@ -1,5 +1,4 @@
 const express = require('express');
-const morgan = require('morgan');
 const path = require('path');
 const preRoutesMiddleware = require('./middlewares/pre-routes.middleware');
 const mountApiRoutes = require('./routes/api.routes');
