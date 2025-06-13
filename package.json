@@ -20,11 +20,13 @@
   "dependencies": {
     "@prisma/client": "^6.9.0",
     "axios": "^1.9.0",
+    "chalk": "^4.1.2",
     "cors": "^2.8.5",
     "dotenv-cli": "^8.0.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "morgan": "^1.10.0",
+    "node-cron": "^4.1.0",
     "nodemon": "^3.1.10"
   },
   "devDependencies": {
