@@ -1,4 +1,5 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient } = require('../generated/prisma');
+const logger = require('./logger.service');
 
 const prisma = new PrismaClient();
 
@@ -9,13 +10,14 @@ module.exports = {
       await prisma.$connect();
       // Enable foreign key enforcement for SQLite
       await prisma.$executeRaw`PRAGMA foreign_keys = ON`;
-      console.log('Connected to database with foreign keys enabled');
+      logger.info('Connected to database with foreign keys enabled');
     } catch (error) {
-      console.error('Database connection error:', error);
-      process.exit(1);
+      logger.error('Database connection error:', error);
+      throw error;
     }
   },
   disconnect: async () => {
     await prisma.$disconnect();
+    logger.warning('Disconnect database');
   },
 };
