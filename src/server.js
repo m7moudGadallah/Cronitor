@@ -6,7 +6,7 @@ const mountViewsRoutes = require('./routes/views.routes');
 const {
   connect: prismaConnect,
   disconnect: prismaDisconnect,
-} = require('./services/prisma');
+} = require('./services/prisma.service');
 
 const PORT = process.env?.PORT;
 const staticFilesDir = path.join(__dirname, '..', 'public');

@@ -1,4 +1,4 @@
-const { prisma } = require('../services/prisma');
+const { prisma } = require('../services/prisma.service');
 const normalizeTextUtil = require('../utils/normalize-text.util');
 
 class MonitoredUrlsRepository {
