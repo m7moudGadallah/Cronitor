@@ -8,8 +8,6 @@ generator client {
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
-  // Enable foreign key constraints in SQLite
-  relationMode = "prisma"
 }
 
 model MonitoredUrl  {
@@ -21,4 +19,14 @@ model MonitoredUrl  {
   isActive    Boolean    @default(true)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+  healthChecks HealthCheck[]
+}
+
+model HealthCheck {
+  id           String     @id @default(uuid())
+  urlId        String
+  url          MonitoredUrl @relation(fields: [urlId], references: [id])
+  status       Int
+  responseTime Int        // in milliseconds
+  timestamp    DateTime   @default(now())
 }
