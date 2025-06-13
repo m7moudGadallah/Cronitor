@@ -1,6 +1,6 @@
 const cron = require('node-cron');
 const monitoredUrlsRepository = require('../repositories/monitored-urls.repository');
-const healthChecksRepository = require('../repositories/health-checks.repository');
+const healthChecksService = require('./health-checks.service');
 const axios = require('axios');
 const logger = require('./logger.service');
 
@@ -82,7 +82,7 @@ class Scheduler {
 
       logger.error(`Request to ${url} failed: ${error.message}`);
     } finally {
-      await healthChecksRepository.create({
+      await healthChecksService.createHealthCheck({
         urlId,
         status,
         responseTime,
