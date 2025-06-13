@@ -1,4 +1,5 @@
 const { prisma } = require('../database/prisma');
+const normalizeTextUtil = require('../utils/normalize-text.util');
 
 class MonitoredUrlsRepository {
   async get() {
@@ -10,6 +11,7 @@ class MonitoredUrlsRepository {
       data: {
         url,
         name,
+        normalizedName: normalizeTextUtil(name),
         interval,
         isActive,
       },
