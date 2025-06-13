@@ -1,5 +1,5 @@
+const viewController = require('../controllers/view.controller');
+
 module.exports = app => {
-  app.get('/', (_, res) => {
-    res.render('index.ejs', { checks: [] });
-  });
+  app.get('/', viewController.getDashboard);
 };
