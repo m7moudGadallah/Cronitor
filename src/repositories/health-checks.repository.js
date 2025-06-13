@@ -1,3 +1,5 @@
+const { prisma } = require('../services/prisma.service');
+
 class HealthChecksRepository {
   get() {
     return Promise.resolve([
@@ -37,6 +39,16 @@ class HealthChecksRepository {
         responseTime: 320,
       },
     ]);
+  }
+
+  async create({ urlId, status, responseTime }) {
+    return await prisma.healthCheck.create({
+      data: {
+        urlId,
+        status,
+        responseTime,
+      },
+    });
   }
 }
 
