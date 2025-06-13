@@ -3,6 +3,10 @@ const path = require('path');
 const preRoutesMiddleware = require('./middlewares/pre-routes.middleware');
 const mountApiRoutes = require('./routes/api.routes');
 const mountViewsRoutes = require('./routes/views.routes');
+const {
+  connect: prismaConnect,
+  disconnect: prismaDisconnect,
+} = require('./database/prisma');
 
 const PORT = process.env?.PORT;
 const staticFilesDir = path.join(__dirname, '..', 'public');
@@ -19,6 +23,14 @@ mountApiRoutes(app);
 // Mount Views Routes
 mountViewsRoutes(app);
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+  // Database connection
+  await prismaConnect();
   console.log(`Monitor app running at http://localhost:${PORT} 🚀!`);
+});
+
+// Handle shutdown
+process.on('SIGINT', async () => {
+  await prismaDisconnect();
+  process.exit();
 });
