@@ -12,3 +12,13 @@ datasource db {
   // Enable foreign key constraints in SQLite
   relationMode = "prisma"
 }
+
+model MonitoredUrl  {
+  id          String     @id @default(uuid())
+  url         String     @unique
+  name        String
+  interval    String     @default("* * * * *") // cron expression
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
