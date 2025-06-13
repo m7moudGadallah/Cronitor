@@ -7,6 +7,8 @@ const {
   connect: prismaConnect,
   disconnect: prismaDisconnect,
 } = require('./services/prisma.service');
+const scheduler = require('./services/scheduler.service');
+const logger = require('./services/logger.service');
 
 const PORT = process.env?.PORT;
 const staticFilesDir = path.join(__dirname, '..', 'public');
@@ -23,14 +25,50 @@ mountApiRoutes(app);
 // Mount Views Routes
 mountViewsRoutes(app);
 
-app.listen(PORT, async () => {
-  // Database connection
-  await prismaConnect();
-  console.log(`Monitor app running at http://localhost:${PORT} 🚀!`);
-});
+// Server startup handler
+const startServer = async () => {
+  try {
+    // Database connection
+    await prismaConnect();
 
-// Handle shutdown
-process.on('SIGINT', async () => {
-  await prismaDisconnect();
-  process.exit();
-});
+    // Initialize scheduler
+    await scheduler.init();
+
+    const server = app.listen(PORT, () => {
+      logger.success(`Monitor app running at http://localhost:${PORT} 🚀!`);
+    });
+
+    // Handle shutdown gracefully
+    const shutdown = async () => {
+      logger.warning('Shutting down server gracefully...');
+
+      // Stop all scheduled jobs
+      scheduler.clear();
+
+      // Disconnect from database
+      await prismaDisconnect();
+
+      // Close the server
+      server.close(() => {
+        logger.warning('Server has been stopped');
+        process.exit(0);
+      });
+
+      // Force shutdown after 5 seconds if not closed
+      setTimeout(() => {
+        logger.error('Forcing shutdown...');
+        process.exit(1);
+      }, 5000);
+    };
+
+    // Handle various shutdown signals
+    process.on('SIGINT', shutdown);
+    process.on('SIGTERM', shutdown);
+    process.on('SIGQUIT', shutdown);
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+};
+
+startServer();
