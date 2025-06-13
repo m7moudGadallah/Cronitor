@@ -6,5 +6,8 @@ module.exports = app => {
   app.route('/api/v1/health-checks').get(healthChecksController.get);
 
   // MonitoredUrls Routes
-  app.route('/api/v1/monitored-urls').post(monitoredUrlsController.create);
+  app
+    .route('/api/v1/monitored-urls')
+    .post(monitoredUrlsController.create)
+    .get(monitoredUrlsController.get);
 };
