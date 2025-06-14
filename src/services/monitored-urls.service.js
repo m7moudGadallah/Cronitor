@@ -1,8 +1,8 @@
 const monitoredUrlsRepository = require('../repositories/monitored-urls.repository');
 const schedulerService = require('./scheduler.service');
 
-async function getMonitoredUrls() {
-  return await monitoredUrlsRepository.get();
+async function getMonitoredUrls({ sort, page, limit, isActive }) {
+  return await monitoredUrlsRepository.get({ sort, page, limit, isActive });
 }
 
 async function createMonitoredUrl({ url, name, interval, isActive }) {
