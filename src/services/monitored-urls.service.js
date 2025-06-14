@@ -7,7 +7,10 @@ async function getMonitoredUrls() {
 
 async function createMonitoredUrl({ url, name, interval, isActive }) {
   const monitoredUrl = await monitoredUrlsRepository.create({
-    data: { url, name, interval, isActive },
+    url,
+    name,
+    interval,
+    isActive,
   });
 
   if (monitoredUrl.isActive) {
