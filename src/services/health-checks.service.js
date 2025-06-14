@@ -6,11 +6,9 @@ async function getHealthChecks() {
 
 async function createHealthCheck({ urlId, status, responseTime }) {
   return await healthChecksRepository.create({
-    data: {
-      urlId,
-      status,
-      responseTime,
-    },
+    urlId,
+    status,
+    responseTime,
   });
 }
 
