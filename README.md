@@ -1,5 +1,7 @@
 # Cronitor
 
+> ⚠️ Warning: This project is still under active development.
+
 A simple Node.js demo that checks if your website is working, using cron jobs.
 
 ## Technologies & Tools
