@@ -3,13 +3,18 @@ const normalizeTextUtil = require('../utils/normalize-text.util');
 const BaseRepository = require('./base.repository');
 
 class MonitoredUrlsRepository extends BaseRepository {
-  async get({ sort, page, limit, isActive }) {
+  async get({ sort, page, limit, isActive, id, name }) {
     const queryOptions = this._buildQueryOptions({
       page,
       limit,
       sort,
-      filters: { isActive },
+      filters: {
+        isActive,
+        id,
+        normalizedName: name ? normalizeTextUtil(name) : undefined,
+      },
     });
+
     if (!queryOptions?.orderBy) {
       queryOptions.orderBy = {
         createdAt: 'asc',

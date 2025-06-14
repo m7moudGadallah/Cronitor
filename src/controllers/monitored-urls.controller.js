@@ -2,8 +2,10 @@ const monitoredUrlsService = require('../services/monitored-urls.service');
 const JsonResponseSchema = require('../utils/json-response-schema.util');
 
 module.exports = {
-  get: async (_, res) => {
-    const monitoredUrls = await monitoredUrlsService.getMonitoredUrls();
+  get: async (req, res) => {
+    const monitoredUrls = await monitoredUrlsService.getMonitoredUrls(
+      req.query
+    );
     res.status(200).json(new JsonResponseSchema({ data: monitoredUrls }));
   },
 

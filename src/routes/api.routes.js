@@ -1,5 +1,9 @@
 const healthChecksController = require('../controllers/health-checks.controller');
 const monitoredUrlsController = require('../controllers/monitored-urls.controller');
+const validateMiddleware = require('../middlewares/validate.middleware');
+const {
+  getMonitoredUrlsValidator,
+} = require('../validators/monitored-urls.validator');
 
 module.exports = app => {
   // HealthChecks Routes
@@ -9,5 +13,9 @@ module.exports = app => {
   app
     .route('/api/v1/monitored-urls')
     .post(monitoredUrlsController.create)
-    .get(monitoredUrlsController.get);
+    .get(
+      getMonitoredUrlsValidator,
+      validateMiddleware,
+      monitoredUrlsController.get
+    );
 };
