@@ -3,6 +3,7 @@ const monitoredUrlsController = require('../controllers/monitored-urls.controlle
 const validateMiddleware = require('../middlewares/validate.middleware');
 const {
   getMonitoredUrlsValidator,
+  createMonitoredUrlValidator,
 } = require('../validators/monitored-urls.validator');
 
 module.exports = app => {
@@ -12,7 +13,11 @@ module.exports = app => {
   // MonitoredUrls Routes
   app
     .route('/api/v1/monitored-urls')
-    .post(monitoredUrlsController.create)
+    .post(
+      createMonitoredUrlValidator,
+      validateMiddleware,
+      monitoredUrlsController.create
+    )
     .get(
       getMonitoredUrlsValidator,
       validateMiddleware,
