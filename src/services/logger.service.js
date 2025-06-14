@@ -2,7 +2,7 @@ const util = require('util');
 const chalk = require('chalk');
 
 class Logger {
-  #prefix = chalk.gray('[Logger Service]');
+  #prefix = `${chalk.gray(`[Logger Service @ ${new Date().toISOString()}]`)}`;
 
   #formatMessage(message) {
     if (typeof message === 'object') {
