@@ -9,7 +9,9 @@ class Scheduler {
 
   async init() {
     try {
-      const monitoredUrls = await monitoredUrlsRepository.get();
+      const monitoredUrls = await monitoredUrlsRepository.get({
+        isActive: true,
+      });
 
       monitoredUrls.forEach(item =>
         this.scheduleUrlCheck({
